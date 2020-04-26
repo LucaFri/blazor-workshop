@@ -12,6 +12,7 @@ namespace BlazingPizza.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
+            builder.Services.AddScoped<OrderState>();
 
             await builder.Build().RunAsync();
         }

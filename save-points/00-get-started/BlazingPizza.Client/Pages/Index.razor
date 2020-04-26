@@ -1,5 +1,7 @@
 ﻿@page "/"
 @inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject OrderState OrderState
 
 <div class="main">
     <ul class="pizza-cards">
@@ -45,7 +47,7 @@
 </div>
 @if (_showingConfigureDialog)
 {
-    <ConfigurePizzaDialog Pizza="configuringPizza" OnCancel="CancelConfigurePizzaDialog" OnConfirm="ConfirmConfigurePizzaDialog"/>
+    <ConfigurePizzaDialog Pizza="configuringPizza" OnCancel="CancelConfigurePizzaDialog" OnConfirm="ConfirmConfigurePizzaDialog" />
 }
 
 @code {
@@ -94,7 +96,8 @@
 
     async Task PlaceOrder()
     {
-        await HttpClient.PostAsJsonAsync("orders", order);
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("orders", order);
+        int newOrderId = await response.Content.ReadFromJsonAsync<int>();
         order = new Order();
     }
 
